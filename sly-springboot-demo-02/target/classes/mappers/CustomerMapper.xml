@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sly.springboot.mapper.CustomerMapper">
+    <select id="listCustomer" resultType="Customer">
+        select cid,cust_name,cust_mobile,cust_address,cust_ticket from customer
+    </select>
+</mapper>
