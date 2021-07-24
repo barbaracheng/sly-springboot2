@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sly.water.mapper.WorkerMapper">
+    <select id="listWorker" resultType="Worker">
+         select wid,worker_name,worker_salary,worker_money,worker_image from worker
+    </select>
+
+    <select id="searchWorker" parameterType="string" resultType="Worker">
+        select wid,worker_name,worker_salary,worker_money,worker_image
+        from worker
+        where 1 = 1
+        <!--
+        条件成立表示“客户名称”不为空
+        -->
+        <if test="workerName != null and workerName != ''">
+            and worker_name like concat('%',#{workerName},'%')
+        </if>
+
+    </select>
+
+    <insert id="saveWorker" parameterType="Worker">
+        insert into worker(worker_name,worker_salary,worker_money,worker_image)
+        values(#{workerName},#{workerSalary},#{workerMoney},#{workerImage})
+    </insert>
+
+    <delete id="deleteWorkerById" parameterType="int">
+        delete from worker where wid = #{wid}
+    </delete>
+
+    <update id="updateWorker" parameterType="Worker">
+        update worker
+        set worker_name = #{workerName},worker_salary = #{workerSalary}
+        ,worker_money = #{workerMoney},worker_image = #{workerImage}
+        where wid = #{wid}
+    </update>
+
+    <select id="getWorkerById" parameterType="int" resultType="Worker">
+         select wid,worker_name,worker_salary,worker_money,worker_image
+         from worker
+         where wid =#{wid}
+    </select>
+</mapper>

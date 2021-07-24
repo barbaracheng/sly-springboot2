@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>送水历史列表</title>
+
+    <!--Bootstrap固定框架-->
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.css}">
+    <!--图标库-->
+    <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
+    <!--核心样式-->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div id="viewport">
+
+    <!-- Sidebar -->
+    <div id="sidebar" th:replace="waterMainMenu::menu"></div>
+
+    <!-- Content -->
+    <div id="content">
+        <nav class="navbar navbar-default" th:replace="waterMainMenu::nav">
+
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <a class="btn btn-primary" th:href="@{/history/preSaveHistory}">添加送水历史</a>
+                </div>
+                <form class="form-inline col-md-8" th:action="@{/history/searchHistory}">
+                    <div class="form-group">
+                        查询
+                        <input type="date" required class="form-control" name="sendWaterTime">
+                        到
+                        <input type="date" class="form-control" name="sendWaterTime">
+                    </div>
+                    <button type="submit" class="btn btn-danger">搜索</button>
+                </form>
+                <div class="col-md-12">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <td>历史编号</td>
+                            <td>员工名称</td>
+                            <td>送水时间</td>
+                            <td>客户姓名</td>
+                            <td>送水数量</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 渲染后客户列表-->
+                        <tr th:each="history : ${historyList}">
+                            <td th:text="${history.hid}"></td>
+                            <td th:text="${history.worker.workerName}"></td>
+                            <td th:text="${#dates.format(history.sendWaterTime,'yyyy-MM-dd')}"></td>
+                            <td th:text="${history.customer.custName}"></td>
+                            <td th:text="${history.sendWaterCount}"></td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" th:href="@{'/history/preUpdateHistory/'+${history.hid}}">修改</a>
+                                <a class="btn btn-sm btn-warning" th:href="@{'/history/delHistory/'+${history.hid}}">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

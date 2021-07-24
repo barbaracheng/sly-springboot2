@@ -7,6 +7,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="sly-springboot2-demo-04" />
+        <module name="sly-springboot2-demo-03" />
         <module name="sly-springboot2-demo-02" />
         <module name="sly-springboot2-demo-01" />
       </profile>

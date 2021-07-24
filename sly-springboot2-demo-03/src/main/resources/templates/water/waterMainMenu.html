@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>玉汝于成送水公司后台管理系统</title>
+
+<!--Bootstrap固定框架-->
+<link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+<link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.css}">
+<!--图标库-->
+<link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
+<!--核心样式-->
+<link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    a {
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+<body>
+
+<div id="viewport">
+
+  <!-- Sidebar -->
+  <div id="sidebar" th:fragment="menu">
+    <header>
+      <a href="#">玉汝于成送水公司后台管理</a>
+    </header>
+    <ul class="nav">
+      <li>
+        <a th:href="@{/cust/listCust}">
+          <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+           客户管理
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/worker/workerList}">
+          <i class="glyphicon glyphicon-wrench"></i>
+           员工管理
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/history/historyList}">
+          <i class="glyphicon glyphicon-list-alt"></i>
+           送水历史管理
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="glyphicon glyphicon-yen"></i>
+           计算工资
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="glyphicon glyphicon-stats"></i>
+           统计送水数量
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="zmdi zmdi-widgets"></i> 修改密码
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- Content -->
+  <div id="content">
+    <nav class="navbar navbar-default" th:fragment="nav">
+      <div class="container-fluid" >
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#"><i class="zmdi zmdi-notifications text-danger"></i>
+            </a>
+          </li>
+          <li><a href="#">测试用户[[${session.userName}]]</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid">
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

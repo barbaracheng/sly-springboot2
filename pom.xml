@@ -10,6 +10,8 @@
     <modules>
         <module>sly-springboot2-demo-01</module>
         <module>sly-springboot-demo-02</module>
+        <module>sly-springboot2-demo-03</module>
+        <module>sly-springboot2-demo-04</module>
     </modules>
 
     <!--

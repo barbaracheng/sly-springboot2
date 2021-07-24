@@ -1,0 +1,37 @@
+server:
+  port: 8084
+
+spring:
+  # 配置微服名称
+  application:
+    name: water-springboot-8084
+    # 配置数据源
+  datasource:
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      min-idle: 5
+      max-active: 10
+      max-wait: 5000
+  # thymeleaf模板引擎
+  thymeleaf:
+    cache: false
+    # 模板引擎的前缀
+    prefix: classpath:/templates/water/
+    # 模板引擎后缀
+    suffix: .html
+
+# 配置MyBatis持久层框架
+mybatis:
+  # 执行实体类名称别名所在的包
+  type-aliases-package: com.sly.customer.entities
+  configuration:
+    # 开启驼峰命名，让数据库表的字段和Java实体类的属性完成映射
+    map-underscore-to-camel-case: true
+    # 配置日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 配置映射文件的位置
+  mapper-locations: classpath:/mappers/*Mapper.xml

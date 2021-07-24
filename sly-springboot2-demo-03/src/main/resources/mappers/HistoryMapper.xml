@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sly.water.mapper.HistoryMapper">
+    <!--
+     多张表关联查询，存储查询的结果涉及到多个实体，需要将多张表的查询结果映射到实体类中
+    -->
+    <resultMap id="historyMap" type="History">
+        <!-- 主键列  property实体类的属性 column表的主键列 -->
+        <id  property="hid" column="hid"></id>
+        <result property="sendWaterTime" column="send_water_time"/>
+        <result property="sendWaterCount" column="send_water_count"/>
+        <!--
+         查询结果需要关联到Worker表的worker_name
+         property="worker" 跟History实体类的worker属性对应
+         javaType="Worker" History实体类的worker属性对应的类型为Worker
+        -->
+        <association property="worker" javaType="Worker">
+            <!--
+            需要查询送水工姓名
+             property="workerName" 属性名称
+             column="worker_name"  列名称
+            -->
+            <result property="workerName" column="worker_name"/>
+        </association>
+
+        <association property="customer" javaType="Customer">
+            <result property="custName" column="cust_name"/>
+        </association>
+    </resultMap>
+    <!--
+    resultMap="historyMap" 当前select查询返回的结果集映射到上面定义的historyMap
+    -->
+    <select id="listHistory"  resultMap="historyMap">
+        SELECT h.hid,w.worker_name,h.send_water_time,c.cust_name,h.send_water_count
+        FROM history h , worker w ,customer c
+        WHERE h.worker_id = w.wid and h.cust_id = c.cid
+    </select>
+
+
+    <delete id="deleteHistoryById" parameterType="int">
+        delete from history where hid=#{hid}
+    </delete>
+</mapper>
