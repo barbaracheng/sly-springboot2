@@ -57,8 +57,8 @@
                             <td th:text="${worker.workerMoney}"></td>
                             <td th:text="${worker.workerImage}"></td>
                             <td>
-                                <a class="btn btn-sm btn-primary" th:href="@{'/worker/preUpdateWorker/'+${worker.wid}}">修改</a>
-                                <a class="btn btn-sm btn-warning" th:href="@{'/worker/delWorker/'+${worker.wid}}">删除</a>
+                                <a class="glyphicon glyphicon-edit" th:href="@{'/worker/preUpdateWorker/'+${worker.wid}}">修改</a>
+                                <a class="glyphicon glyphicon-remove" th:href="@{'/worker/delWorker/'+${worker.wid}}">删除</a>
                             </td>
                         </tr>
                         </tbody>
