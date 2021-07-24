@@ -23,6 +23,15 @@ spring:
     prefix: classpath:/templates/water/
     # 模板引擎后缀
     suffix: .html
+      # Springboot从classpath中按如下优先级加载对应前端静态资源
+      # classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resource
+      # 除此之外还要加载E:/upLoad/picture/路径下的静态资源
+  resources:
+    static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resource,file:${location}
+
+# 上传到服务器的路径
+location: E:/upLoad/picture/
+
 
 # 配置MyBatis持久层框架
 mybatis:
@@ -35,3 +44,4 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 配置映射文件的位置
   mapper-locations: classpath:/mappers/*Mapper.xml
+

@@ -11,7 +11,7 @@
     <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
     <!--核心样式-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    <script src="./js/index.js"></script>
 </head>
 <body>
 
@@ -32,10 +32,10 @@
                 </div>
                 <form class="form-inline col-md-8" th:action="@{/history/searchHistory}">
                     <div class="form-group">
-                        查询
-                        <input type="date" required class="form-control" name="sendWaterTime">
-                        到
-                        <input type="date" class="form-control" name="sendWaterTime">
+                        <label>开始时间：</label>
+                        <input type="date" class="form-control" name="startTime" th:value="${startTime}">
+                        <label>结束时间：</label>
+                        <input type="date" class="form-control" name="endTime" th:value="${endTime}">
                     </div>
                     <button type="submit" class="btn btn-danger">搜索</button>
                 </form>
@@ -60,8 +60,8 @@
                             <td th:text="${history.customer.custName}"></td>
                             <td th:text="${history.sendWaterCount}"></td>
                             <td>
-                                <a class="glyphicon glyphicon-edit" th:href="@{'/history/preUpdateHistory/'+${history.hid}}">修改</a>
-                                <a class="glyphicon glyphicon-remove" th:href="@{'/history/delHistory/'+${history.hid}}">删除</a>
+                                <a class="glyphicon glyphicon-edit" th:href="@{'/history/preUpdateHistory/'+${history.hid}}"></a>
+                                <a class="glyphicon glyphicon-remove" th:href="@{'/history/delHistory/'+${history.hid}}"></a>
                             </td>
                         </tr>
                         </tbody>

@@ -1,6 +1,8 @@
 package com.sly.water.mapper;
 
+import cn.hutool.core.date.DateTime;
 import com.sly.water.entities.History;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,6 +21,13 @@ public interface HistoryMapper {
 
     int deleteHistoryById(Integer hid);
 
+    int saveHistory(History history);
+
+    List<History> searchHistory(@Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    History getHistoryById(Integer hid);
+
+    int updateHistory(History history);
 
 
 }

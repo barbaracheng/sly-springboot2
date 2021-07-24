@@ -39,8 +39,38 @@
         WHERE h.worker_id = w.wid and h.cust_id = c.cid
     </select>
 
+    <select id="searchHistory" resultMap="historyMap" parameterType="string">
+        SELECT h.hid,w.worker_name,h.send_water_time,c.cust_name,h.send_water_count
+        FROM history h , worker w ,customer c
+        WHERE h.worker_id = w.wid and h.cust_id = c.cid
+        <if test="startTime != null and startTime != ''">
+            and send_water_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and send_water_time &lt;= #{endTime}
+        </if>
+    </select>
 
     <delete id="deleteHistoryById" parameterType="int">
         delete from history where hid=#{hid}
     </delete>
+
+    <insert id="saveHistory" parameterType="history">
+        insert into history(cust_id,worker_id,send_water_time,send_water_count)
+        values (#{customer.cid},#{worker.wid},#{sendWaterTime},#{sendWaterCount})
+    </insert>
+
+    <select id="getHistoryById" resultMap="historyMap">
+        select h.hid,w.worker_name,h.send_water_time,c.cust_name,h.send_water_count
+        FROM history h , worker w , customer c
+        WHERE h.worker_id = w.wid and h.cust_id = c.cid and h.hid = #{hid}
+    </select>
+
+    <update id="updateHistory" parameterType="History">
+        update history
+        set cust_id = #{customer.cid} , worker_id = #{worker.wid}
+            , send_water_time = #{sendWaterTime} , send_water_count = #{sendWaterCount}
+        where hid = #{hid}
+    </update>
+
 </mapper>

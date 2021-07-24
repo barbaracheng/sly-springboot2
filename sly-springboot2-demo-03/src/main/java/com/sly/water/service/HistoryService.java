@@ -1,5 +1,6 @@
 package com.sly.water.service;
 
+import cn.hutool.core.date.DateTime;
 import com.sly.water.entities.History;
 
 import java.util.List;
@@ -19,4 +20,11 @@ public interface HistoryService {
 
     int deleteHistoryById(Integer hid);
 
+    int saveHistory(History history, Integer custId, Integer workerId);
+
+    List<History> searchHistory(String startTime, String endTime);
+
+    History getHistoryById(Integer hid);
+
+    int updateHistory(History history, Integer custId, Integer workerId);
 }

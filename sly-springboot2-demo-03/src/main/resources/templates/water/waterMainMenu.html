@@ -15,8 +15,12 @@
     a {
       cursor: pointer;
     }
+    .active {
+      color: #20a0ff;
+    }
   </style>
 
+  <script th:src="@{/js/index.js}"></script>
 </head>
 <body>
 
@@ -25,7 +29,7 @@
   <!-- Sidebar -->
   <div id="sidebar" th:fragment="menu">
     <header>
-      <a href="#">玉汝于成送水公司后台管理</a>
+      <a href="#" id="linknav">玉汝于成送水公司后台管理</a>
     </header>
     <ul class="nav">
       <li>
@@ -72,7 +76,7 @@
       <div class="container-fluid" >
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#"><i class="zmdi zmdi-notifications text-danger"></i>
+            <a href="#" class="glyphicon glyphicon-home" style="color: #d9534f;">
             </a>
           </li>
           <li><a href="#">测试用户[[${session.userName}]]</a></li>

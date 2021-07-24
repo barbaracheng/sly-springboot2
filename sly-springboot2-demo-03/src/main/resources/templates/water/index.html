@@ -2,34 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Login</title>
-		<meta charset="utf-8">
-		<link th:href="@{/css/style2.css}" rel='stylesheet' type='text/css' />
+	<meta charset="utf-8">
+	<link th:href="@{/css/style2.css}" rel='stylesheet' type='text/css' />
+    <!--Bootstrap固定框架-->
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.css}">
+    <!--图标库-->
+    <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
+    <!--核心样式-->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<script src="./js/index.js"></script>
+    <style>
+        #userName #password{
+            width: 100%;
+            background-color: #d3d3d3;
+            border-radius: 5px;
+        }
+        span {
+            width: 10px;
+            height: 10px;
+        }
+        .company {
+            width: 100%;
+            height: 50px;
+            margin: 50px auto 20px;
+
+        }
+        .wrapCompany {
+            width: 80%;
+            height: 50px;
+            margin: 0 auto;
+        }
+        .companyName{
+            text-align: center;
+            font-size:25px;
+            color:#676767;
+            font-family: 'Open Sans', sans-serif;
+            font-weight:400;
+        }
+
+    </style>
 </head>
 <body>
+
+    <header>
+        <div class="company">
+            <div class="wrapCompany">
+                <h2 class="companyName">玉汝于成送水公司后台管理系统</h2>
+            </div>
+        </div>
+    </header>
 	 <!-----start-main---->
 
 	 <div class="main">
 		<div class="login-form">
 			<h1>用户登录</h1>
-				<div class="head">
-					<img src="../../images/user.png" alt=""/>
-				</div>
-				<form th:action="@{/login}" th:method="post">
-					<input type="text" class="text" name="userName" required >
-					<input type="password" name="userPwd" required>
-					<div class="submit">
-						<input type="submit" name="submit" value="登录" >
-					</div>	
-					<p><a href="#">Forgot Password ?</a></p>
-					<!--th:if="${not #strings.isEmpty(loginFail)}"表示当loginFail不为空时，显示loginFail的内容-->
-					<p th:text="${loginFail}" th:if="${not #strings.isEmpty(loginFail)}"></p>
-				</form>
-		</div>
-		 	<div class="copy-right">
-				<p>Copyright &copy; 2021.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
-			</div>
-		</div>
+            <div class="head">
+                <img style="width: 120px;height: 120px;" src="../../images/inco-user.png" alt=""/>
+            </div>
+            <form th:action="@{/login}" th:method="post">
+                <div id="userName">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <input type="text" class="text" name="userName" required >
+                </div>
+                <div id="password">
+                    <span class="glyphicon glyphicon-lock"></span>
+                    <input type="password" name="userPwd" required>
+                </div>
 
-<!--<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>-->
+                <div class="submit">
+                    <input type="submit" name="submit" value="登录" >
+                </div>
+                <p><a href="#">Forgot Password ?</a></p>
+                <!--th:if="${not #strings.isEmpty(loginFail)}"表示当loginFail不为空时，显示loginFail的内容-->
+                <p th:text="${loginFail}" th:if="${not #strings.isEmpty(loginFail)}"></p>
+            </form>
+		</div>
+     </div>
 </body>
 </html>

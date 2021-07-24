@@ -11,7 +11,7 @@
     <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
     <!--核心样式-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    <script src="./js/index.js"></script>
 </head>
 <body>
 
@@ -62,7 +62,7 @@
                 <div class="col-sm-4 col-sm-offset-2">
                     <div style="display: flex;flex-flow: row nowrap;justify-content: space-between;" >
                         <input id="submit" type="submit" class="btn btn-primary" value="提交"/>
-                        <a class="btn-default btn" th:href="@{/cust/listCust}">返回</a>
+                        <input id="btnCancel" class="btn btn-default" type="button" value="返回" onclick="history.go(-1)"/>
                     </div>
                 </div>
             </div>

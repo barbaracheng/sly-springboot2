@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>添加员工</title>
+    <title>修改送水历史</title>
 
     <!--Bootstrap固定框架-->
     <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
@@ -12,46 +12,54 @@
     <!--核心样式-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="./js/index.js"></script>
-
 </head>
 <body>
 
 <div id="viewport">
 
     <!-- Sidebar -->
-    <div id="sidebar" th:replace="waterMainMenu::menu">
-    </div>
+    <div id="sidebar" th:replace="waterMainMenu::menu"></div>
 
     <!-- Content -->
     <div id="content">
         <nav class="navbar navbar-default" th:replace="waterMainMenu::nav"></nav>
 
-        <form class="form-horizontal" method="post" th:action="@{/worker/saveWorker}" enctype="multipart/form-data">
+        <form class="form-horizontal" method="post" th:action="@{/history/updateHistory}">
             <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">员工名称</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="inputName" name="workerName">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="Mobile" class="col-sm-2 control-label">员工工资</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="Mobile" name="workerSalary">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="Address" class="col-sm-2 control-label">员工提成</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="Address" name="workerMoney">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="aa" class="col-sm-2 control-label">员工图片</label>
-                <div class="col-sm-4">
-                    <input type="file" id="aa" name="uploadFile">
-                </div>
-            </div>
+                <input type="hidden" th:value="${history.hid}" name="hid"/>
 
+                <label for="inputName" class="col-sm-2 control-label">员工姓名</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="workerId" id="inputName">
+                        <option th:each="worker:${workerList}"
+                                th:selected="${history.worker.workerName eq worker.workerName}"
+                                th:value="${worker.wid}" th:text="${worker.workerName}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Mobile" class="col-sm-2 control-label">送水时间</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" id="Mobile" th:value="${#dates.format(history.sendWaterTime,'yyyy-MM-dd')}" name="sendWaterTime">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="custname" class="col-sm-2 control-label">客户姓名</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="custId" id="custname">
+                        <option th:each="cust:${customerList}"
+                                th:selected="${history.customer.custName eq cust.custName}"
+                                th:value="${cust.cid}" th:text="${cust.custName}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Ticket" class="col-sm-2 control-label">送水数量</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" th:value="${history.sendWaterCount}" name="sendWaterCount" id="Ticket">
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-2">
                     <div style="display: flex;flex-flow: row nowrap;justify-content: space-between;" >
@@ -61,9 +69,9 @@
                 </div>
             </div>
         </form>
+
     </div>
 </div>
-
 
 </body>
 </html>

@@ -1,4 +1,6 @@
+import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
+import com.sly.water.service.HistoryService;
 import com.sly.water.service.WorkerService;
 import com.sly.water.service.impl.WorkerServiceImpl;
 import org.junit.Test;
@@ -25,6 +27,9 @@ public class test {
         for (Worker worker1 : worker) {
             System.out.println(worker1);
         }
+        History h = new History();
+
+
 
     }
 }

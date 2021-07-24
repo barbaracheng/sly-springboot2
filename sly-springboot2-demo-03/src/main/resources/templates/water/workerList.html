@@ -11,6 +11,7 @@
     <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
     <!--核心样式-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="./js/index.js"></script>
 
 </head>
 <body>
@@ -55,10 +56,18 @@
                             <td th:text="${worker.workerName}"></td>
                             <td th:text="${worker.workerSalary}"></td>
                             <td th:text="${worker.workerMoney}"></td>
-                            <td th:text="${worker.workerImage}"></td>
                             <td>
-                                <a class="glyphicon glyphicon-edit" th:href="@{'/worker/preUpdateWorker/'+${worker.wid}}">修改</a>
-                                <a class="glyphicon glyphicon-remove" th:href="@{'/worker/delWorker/'+${worker.wid}}">删除</a>
+                                <img src="../../images/user.png"
+                                     style="width:40px;height:40px;"
+                                     th:if="${#strings.isEmpty(worker.workerImage)}">
+                                <img th:src="@{'http://localhost:8083/'+${worker.workerImage}}"
+                                     style="width:40px;height:40px;"
+                                     th:if="${not #strings.isEmpty(worker.workerImage)}"
+                                />
+                            </td>
+                            <td>
+                                <a class="glyphicon glyphicon-edit" th:href="@{'/worker/preUpdateWorker/'+${worker.wid}}"></a>
+                                <a class="glyphicon glyphicon-remove" th:href="@{'/worker/delWorker/'+${worker.wid}}"></a>
                             </td>
                         </tr>
                         </tbody>
