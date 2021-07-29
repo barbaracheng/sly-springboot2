@@ -1,6 +1,7 @@
 package com.sly.water.service.impl;
 
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.StrUtil;
 import com.sly.water.entities.Customer;
 import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
@@ -10,7 +11,9 @@ import com.sly.water.service.HistoryService;
 import com.sly.water.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,5 +76,26 @@ public class HistoryServiceImpl implements HistoryService {
         history.setCustomer(customer);
 
         return historyMapper.updateHistory(history);
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param ids 送水历史编号
+     * @return 大于0删除成功，否则删除失败
+     * rollbackFor：触发回滚的异常。此时发生Exception异常或者它的子类就会触发事务回滚。
+     */
+    @Override
+    @Transactional(rollbackFor = {Exception.class,Error.class})
+    public int deleteBatchHistory(String ids) {
+        ids = ids.replaceFirst(",", "");
+        String[] split = StrUtil.split(ids, ",");
+        ArrayList<Integer> idList = new ArrayList<>();
+        for (String id : split) {
+            idList.add(Integer.parseInt(id));
+        }
+        int rows = historyMapper.deleteBatchHistory(idList);
+//        System.out.println(1/0);
+        return rows;
     }
 }

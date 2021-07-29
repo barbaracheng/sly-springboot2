@@ -1,6 +1,7 @@
 package com.sly.water.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Worker;
 import com.sly.water.service.WorkerService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,11 @@ public class WorkerController {
     @Value("${location}")
     private String location;
 
+    /**
+     * 列出员工信息
+     * @param model
+     * @return
+     */
     @RequestMapping("/workerList")
     public String listWorker(Model model) {
         List<Worker> list = workerService.listWorker();
@@ -43,17 +49,56 @@ public class WorkerController {
         return "workerList";
     }
 
+    /**
+     * 分页列出员工信息
+     * @param pageNum
+     * @param model
+     * @return
+     */
+    @RequestMapping("/workerListPage")
+    public String listCustomerForPage(@RequestParam(value = "pageNum",defaultValue = "1")
+                                                  Integer pageNum, Model model) {
+        PageInfo<Worker> pageInfo = workerService.listWorkerForPage(pageNum);
+        List<Worker> workerList = pageInfo.getList();
+        //
+        model.addAttribute("workerList",workerList);
+        model.addAttribute("pageInfo",pageInfo);
+        // 加一个属性pageData，表示是普通的分页查询，不是根据条件搜索
+        model.addAttribute("pageData","listWorker");
+        return "workerList";
+    }
+
+
+    /**
+     * 搜索分页
+     * 步骤：
+     * 1 调  员工管理的搜索功能
+     * 2 转
+     *   将搜索的员工列表返回给前端(数据共享)
+     *   跳转到员工列表页面
+     * @param workerName
+     * @param model
+     * @return
+     */
     @RequestMapping("/searchWorker")
-    public String searchWorker(String workerName,Model model) {
+    public String searchWorker(String workerName,
+                               @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                               Model model) {
         if(log.isInfoEnabled()) {
             log.info("searchWorker name = "+ workerName);
         }
-        List<Worker> workerList = workerService.searchWorker(workerName);
+        PageInfo<Worker> pageInfo = workerService.searchWorker(pageNum,workerName);
         // 数据传入到前端
-        model.addAttribute("workerList",workerList);
-        // 跳转到客户列表页面
+        model.addAttribute("workerList",pageInfo.getList());
+        model.addAttribute("pageInfo",pageInfo);
+        // 按条件搜索分页
+        model.addAttribute("pageData","searchData");
+        model.addAttribute("data",workerName);
+
+        // 跳转到员工列表页面
         return "workerList";
     }
+
 
     @RequestMapping("/preSaveWorker")
     public String preSaveWorker() {
@@ -138,6 +183,12 @@ public class WorkerController {
     }
 
 
+    /**
+     * 点击修改跳转到这个方法
+     * @param wid 员工id
+     * @param model
+     * @return 修改员工信息界面
+     */
     @RequestMapping("/preUpdateWorker/{wid}")
     public String  preUpdateWorker(@PathVariable("wid") Integer wid,Model model) {
         if (log.isInfoEnabled()) {
@@ -148,6 +199,13 @@ public class WorkerController {
         return "workerUpdate";
     }
 
+    /**
+     * 在修改员工信息页面点击“提交”时，跳转到此处
+     * @param worker
+     * @param uploadFile
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/updateWorker",method = RequestMethod.POST)
     public String updateWorker(Worker worker,MultipartFile uploadFile) throws IOException {
         // 获取浏览器上传的文件
@@ -185,6 +243,12 @@ public class WorkerController {
         return "redirect:/worker/workerList";
     }
 
+    /**
+     * 加工资、减工资
+     * @param wid
+     * @param workerSalary
+     * @return
+     */
     @RequestMapping(value = "/adjustSalary",method = RequestMethod.POST)
     @ResponseBody
     public String adjustSalary(@RequestParam("wid")Integer wid, @RequestParam("workerSalary")Integer workerSalary){
@@ -200,5 +264,23 @@ public class WorkerController {
         } else{
             return "fail";
         }
+    }
+
+    /**
+     * 统计未送水员工的信息
+     * @return
+     */
+    @RequestMapping("/workerSendNoWater")
+    public String workerSendNoWater(@RequestParam(value = "pageNum",defaultValue = "1")
+                                                Integer pageNum,Model model) {
+        PageInfo<Worker> pageInfo = workerService.searchworkerSendNoWater(pageNum);
+
+        List<Worker> workerList = pageInfo.getList();
+        //
+        model.addAttribute("workerList",workerList);
+        model.addAttribute("pageInfo",pageInfo);
+        // 加一个属性pageData，表示是普通的分页查询，不是根据条件搜索
+        model.addAttribute("pageData","SendNoWater");
+        return "workerList";
     }
 }

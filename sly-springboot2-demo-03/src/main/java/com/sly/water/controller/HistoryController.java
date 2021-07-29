@@ -12,9 +12,7 @@ import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -167,5 +165,27 @@ public class HistoryController {
             log.info("delete History rows = "+rows);
         }
         return "redirect:/history/historyList";
+    }
+
+    /**
+     批量删除
+     */
+    @RequestMapping(value="/deleteBatch",method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteBatchHistory(@RequestParam("ids")String ids) {
+        if(log.isInfoEnabled()) {
+            log.info("deleteBatchHistory ids = "+ ids);
+        }
+        try {
+            int rows = historyService.deleteBatchHistory(ids);
+            if(rows > 0) {
+                return "OK";
+            } else {
+                return "fail";
+            }
+        } catch (Exception e){
+            log.error("删除失败...回滚事务..",e);
+            return "fail";
+        }
     }
 }

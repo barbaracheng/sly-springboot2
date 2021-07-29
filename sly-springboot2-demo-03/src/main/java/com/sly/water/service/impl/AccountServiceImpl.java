@@ -37,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
         }
         // 将用户信息保存在session中
         httpSession.setAttribute("userInfo",account);
+
         // 使用MD5加密算法将用户密码加密再与从数据库查出来的用户密码进行比较
         userPwd = DigestUtil.md5Hex(userPwd);
         return Objects.equals(userPwd, account.getUserPwd());

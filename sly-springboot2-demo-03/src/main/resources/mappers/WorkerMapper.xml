@@ -48,4 +48,10 @@
         set worker_salary = #{workerSalary}
         where wid=#{wid}
     </update>
+
+    <select id="workerSendNoWater" resultType="Worker">
+        select w.wid,w.worker_name,w.worker_salary,w.worker_money,w.worker_image
+        from worker w left join history h on w.wid = h.worker_id
+        where h.worker_id is null
+    </select>
 </mapper>

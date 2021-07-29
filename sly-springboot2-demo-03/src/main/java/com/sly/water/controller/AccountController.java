@@ -29,7 +29,6 @@ public class AccountController {
     @Autowired
     HttpSession httpSession;
 
-
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(String userName, String userPwd, Model model) {
         boolean loginResult = accountService.login(userName, userPwd,httpSession);
@@ -66,6 +65,10 @@ public class AccountController {
         String newPwd = DigestUtil.md5Hex(userPwd);
         account.setUserPwd(newPwd);
         int rows = accountService.updateAccount(account);
+        // 如果修改成功，则更新当前用户的信息到前端页面
+        if (rows > 0) {
+            httpSession.setAttribute("userInfo",account);
+        }
         if (log.isInfoEnabled()) {
             log.info("update rows = "+rows);
         }

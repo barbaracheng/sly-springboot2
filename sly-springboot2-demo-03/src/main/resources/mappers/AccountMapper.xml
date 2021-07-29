@@ -11,12 +11,12 @@
     </select>
 
     <update id="updateAccount" parameterType="Account">
-        update account
+        update account set
         <if test="userName != null and userName !=''">
-            set user_name = #{userName}
+            user_name = #{userName},
         </if>
         <if test="userPwd != null and userPwd != ''">
-            ,user_pwd = #{userPwd}
+            user_pwd = #{userPwd}
         </if>
         where id = #{id};
     </update>

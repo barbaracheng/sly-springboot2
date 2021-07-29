@@ -93,8 +93,8 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public PageInfo<Customer> listCustomerForPage(Integer pageNum) {
-        // 分页的核心：从第pageNum页开始，每页显示3条记录
-        PageHelper.startPage(pageNum,3);
+        // 分页的核心：从第pageNum页开始，每页显示5条记录
+        PageHelper.startPage(pageNum,PAGE_SiZE);
         List<Customer> list = this.listCustomer();
         // 分页Bean，封装了分页查询的数据，将查询结果注入到分页对象(Bean)
         PageInfo<Customer> pageInfo =  new PageInfo<>(list);
@@ -110,7 +110,7 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public PageInfo<Customer> searchCustomer(Integer pageNum, String custName) {
-        PageHelper.startPage(pageNum,3);
+        PageHelper.startPage(pageNum,PAGE_SiZE);
         List<Customer> custList = this.searchCustomer(custName);
         PageInfo<Customer> pageInfo = new PageInfo<>(custList);
         return pageInfo;

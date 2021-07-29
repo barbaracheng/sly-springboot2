@@ -73,4 +73,17 @@
         where hid = #{hid}
     </update>
 
+    <delete id="deleteBatchHistory" parameterType="list">
+        delete from history where hid in
+        <!--
+			collection里面的值必须是一个集合类型
+			注意：idList必须跟Mapper接口的@Param("idList")一致
+			item里面的值表示集合的元素
+			separator表示分隔符，多个id值使用半角逗号隔开
+ 			-->
+        <foreach collection="idList" item="hid" open="(" close=")" separator=",">
+            #{hid}
+        </foreach>
+    </delete>
+
 </mapper>

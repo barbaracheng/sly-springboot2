@@ -37,16 +37,6 @@ public class CustomerController {
         return "custList";
     }
 
-//    @RequestMapping("/searchCust")
-//    public String searchCust(@Param("custName") String custName, Model model) {
-//        List<Customer> customers = customerService.searchCustomer(custName);
-//        if (log.isInfoEnabled()) {
-//            log.info(customers.toString());
-//        }
-//        model.addAttribute("custList",customers);
-//        model.addAttribute("data",custName);
-//        return "custList";
-//    }
 
     @RequestMapping("/preSaveCust")
     public String preSaveCust() {
@@ -97,6 +87,12 @@ public class CustomerController {
     }
 
 
+    /**
+     * 分页列出客户信息
+     * @param pageNum
+     * @param model
+     * @return
+     */
     @RequestMapping("/custListPage")
     public String listCustomerForPage(@RequestParam(value = "pageNum",defaultValue = "1")
                                                   Integer pageNum, Model model) {

@@ -15,6 +15,21 @@
     <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
     <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
     <script th:src="@{/js/index.js}"></script>
+    <script>
+        $(function () {
+            // 给input[type=date]设置默认值
+            let now = new Date();
+            // 格式化日，日期小于10，前面补0
+            let day = ("0" + now.getDate()).slice(-2);
+            // 格式化月份，月份小于10，前面补0
+            let month = ("0" + (now.getMonth() + 1)).slice(-2);
+            // 拼接完整的日期
+            let today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+            console.log("执行到这里啦");
+            $("#sendWaterTime").val(today);
+        })
+    </script>
+
 </head>
 <body>
 
@@ -41,9 +56,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="Mobile" class="col-sm-2 control-label">送水时间</label>
+                <label for="sendWaterTime" class="col-sm-2 control-label">送水时间</label>
                 <div class="col-sm-4">
-                    <input type="date" class="form-control" id="Mobile" name="sendWaterTime">
+                    <input type="date" class="form-control" id="sendWaterTime" name="sendWaterTime">
                 </div>
             </div>
             <div class="form-group">

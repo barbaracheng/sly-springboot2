@@ -37,4 +37,10 @@ public interface WorkerMapper {
      */
     int adjustSalary(@Param("wid") Integer wid, @Param("workerSalary") Integer workerSalary);
 
+    /**
+     * 查询未送水员工
+     * @return
+     */
+    List<Worker> workerSendNoWater();
+
 }

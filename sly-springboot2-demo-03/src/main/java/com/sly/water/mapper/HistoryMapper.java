@@ -29,5 +29,12 @@ public interface HistoryMapper {
 
     int updateHistory(History history);
 
+    /**
+     * 批量删除历史信息
+     * @param idList 要删除的历史id。例如：1,2,3,5,6,7
+     * @return 大于0批量删除成功，否则批量删除失败
+     */
+    int deleteBatchHistory(@Param("idList") List<Integer> idList);
+
 
 }

@@ -27,4 +27,13 @@ public interface HistoryService {
     History getHistoryById(Integer hid);
 
     int updateHistory(History history, Integer custId, Integer workerId);
+
+    /**
+     * 批量删除
+     * @param ids 送水历史编号
+     * @return 大于0删除成功，否则删除失败
+     */
+    int deleteBatchHistory(String ids);
+
+
 }

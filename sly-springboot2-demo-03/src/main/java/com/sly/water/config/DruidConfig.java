@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * TODO:
+ * TODO: Druid数据源监控
  * 被@Configuration注解修饰的类可以替换xml配置文件
- * @Configuration用于构建Spring，启动Spring容器
+ * *@Configuration用于构建Spring，启动Spring容器
  * @author leyuan
  * @date 2021/7/29 9:55
  */
@@ -25,7 +25,7 @@ public class DruidConfig {
     /**
      * Druid数据源注入到Spring容器
      *
-     * @ConfigurationProperties(prefix = "spring.datasource")表示获取yml配置文件
+     * *@ConfigurationProperties(prefix = "spring.datasource")表示获取yml配置文件
      * 前缀为spring.datasource的所有属性值
      * 被@Bean注解的方法被AnnotationConfigWebApplicationContext类扫描，将方法
      * 返回的对象注入到Spring容器
@@ -51,8 +51,8 @@ public class DruidConfig {
         // 配置登录Druid后台监控系统的初始账号和密码
         Map<String, String> initParams = new ConcurrentHashMap<>();
         // 登录的key都是固定的
-        initParams.put("loginUsername","admin");
-        initParams.put("loginPassword","robert");
+        initParams.put("loginUsername","leyuan");
+        initParams.put("loginPassword","1234");
         // 允许谁访问
         initParams.put("allow","");
         // 设置初始化参数
@@ -60,5 +60,7 @@ public class DruidConfig {
 
         return statBean;
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.sly.water.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Worker;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,4 +36,33 @@ public interface WorkerService {
      * @return 大于0调整工资成功，否则调整工资失败
      */
     int adjustSalary(Integer wid, Integer workerSalary);
+
+    /**
+     * 查询未送水员工
+     * @return
+     */
+    List<Worker> workerSendNoWater();
+
+
+    /**
+     * 每页数量
+     */
+    public final static int PAGE_SiZE = 5;
+
+    /**
+     * 查询列表分页
+     * @param pageNum 当前页码
+     * @return 分页对象
+     */
+    public PageInfo<Worker> listWorkerForPage(Integer pageNum);
+
+    /**
+     * 表单搜索分页
+     * @param pageNum 当前页码
+     * @param workerName 客户名称
+     * @return 分页对象
+     */
+    PageInfo<Worker> searchWorker(Integer pageNum,String workerName);
+
+    PageInfo<Worker> searchworkerSendNoWater(Integer pageNum);
 }

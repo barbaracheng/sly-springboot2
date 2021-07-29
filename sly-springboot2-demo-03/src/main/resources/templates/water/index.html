@@ -92,7 +92,7 @@
                     <a href="#">Forgot Password ?</a>
                 </p>
                 <!--th:if="${not #strings.isEmpty(loginFail)}"表示当loginFail不为空时，显示loginFail的内容-->
-                <p th:text="${loginFail}" th:if="${not #strings.isEmpty(loginFail)}"></p>
+                <p th:text="${loginFail}" th:if="${not #strings.isEmpty(loginFail)}" style="color: red;font-size: 18px;"></p>
             </form>
 		</div>
      </div>

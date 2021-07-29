@@ -1,5 +1,7 @@
 package com.sly.water.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Worker;
 import com.sly.water.mapper.WorkerMapper;
 import com.sly.water.service.WorkerService;
@@ -66,4 +68,58 @@ public class WorkerServiceImpl implements WorkerService {
     public int adjustSalary(Integer wid, Integer workerSalary) {
         return workerMapper.adjustSalary(wid,workerSalary);
     }
+
+    /**
+     * 查询未送水员工
+     *
+     * @return
+     */
+    @Override
+    public List<Worker> workerSendNoWater() {
+        return workerMapper.workerSendNoWater();
+    }
+
+/**
+ * ===============================
+ * 下面是分页的功能
+ */
+    /**
+     * 查询列表分页
+     * @param pageNum 当前页码
+     * @return 分页对象
+     */
+    @Override
+    public PageInfo<Worker> listWorkerForPage(Integer pageNum) {
+        // 分页的核心：从第pageNum页开始，每页显示5条记录
+        PageHelper.startPage(pageNum,PAGE_SiZE);
+        List<Worker> list = this.listWorker();
+        // 分页Bean，封装了分页查询的数据，将查询结果注入到分页对象(Bean)
+        PageInfo<Worker> pageInfo =  new PageInfo<>(list);
+        return pageInfo;
+    }
+
+    /**
+     * 表单搜索分页
+     *
+     * @param pageNum    当前页码
+     * @param workerName 员工名称
+     * @return 分页对象
+     */
+    @Override
+    public PageInfo<Worker> searchWorker(Integer pageNum, String workerName) {
+        PageHelper.startPage(pageNum,PAGE_SiZE);
+        List<Worker> custList = this.searchWorker(workerName);
+        PageInfo<Worker> pageInfo = new PageInfo<>(custList);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<Worker> searchworkerSendNoWater(Integer pageNum) {
+        PageHelper.startPage(pageNum,PAGE_SiZE);
+        List<Worker> workerList = this.workerSendNoWater();
+        PageInfo<Worker> pageInfo = new PageInfo<>(workerList);
+        return pageInfo;
+    }
+
+
 }

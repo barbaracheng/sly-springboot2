@@ -39,7 +39,7 @@
         </a>
       </li>
       <li>
-        <a th:href="@{/worker/workerList}">
+        <a th:href="@{/worker/workerListPage}">
           <i class="glyphicon glyphicon-wrench"></i>
            员工管理
         </a>
@@ -76,7 +76,7 @@
       <div class="container-fluid" >
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a>欢迎您，[[${session.userName}]]!</a>
+            <a>欢迎您，[[${session.userInfo.userName}]]!</a>
           </li>
 <!--          <li>-->
 <!--            <a href="#">-->
@@ -91,7 +91,7 @@
                 <img th:src="@{/images/icon-user.svg}" style="width: 45px;height: 36px;">
                 <span class="caret"></span>
               </button>
-                <a href="#">[[${session.userName}]]</a>
+                <a href="#">[[${session.userInfo.userName}]]</a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li><a href="#">个人中心</a></li>
 <!--                <li role="separator" class="divider"></li>-->
