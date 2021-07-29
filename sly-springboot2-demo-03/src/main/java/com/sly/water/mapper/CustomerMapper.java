@@ -1,5 +1,6 @@
 package com.sly.water.mapper;
 
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Customer;
 import org.apache.ibatis.annotations.Param;
 
@@ -54,6 +55,7 @@ public interface CustomerMapper {
      * @return 受影响行数。大于0：修改成功。否则：修改失败
      */
     public int updateCustomer(Customer customer);
+
 
 
 }

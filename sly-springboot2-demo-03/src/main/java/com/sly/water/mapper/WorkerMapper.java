@@ -29,4 +29,12 @@ public interface WorkerMapper {
 
     List<Worker> searchWorker(@Param("workerName") String workerName);
 
+    /**
+     * 调整工资
+     * @param wid 工人id
+     * @param workerSalary 送水工工资
+     * @return 大于0调整工资成功，否则调整工资失败
+     */
+    int adjustSalary(@Param("wid") Integer wid, @Param("workerSalary") Integer workerSalary);
+
 }

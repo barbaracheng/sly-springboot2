@@ -1,5 +1,6 @@
 package com.sly.water.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Customer;
 import com.sly.water.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -35,16 +37,16 @@ public class CustomerController {
         return "custList";
     }
 
-    @RequestMapping("/searchCust")
-    public String searchCust(@Param("custName") String custName, Model model) {
-        List<Customer> customers = customerService.searchCustomer(custName);
-        if (log.isInfoEnabled()) {
-            log.info(customers.toString());
-        }
-        model.addAttribute("custList",customers);
-        model.addAttribute("data",custName);
-        return "custList";
-    }
+//    @RequestMapping("/searchCust")
+//    public String searchCust(@Param("custName") String custName, Model model) {
+//        List<Customer> customers = customerService.searchCustomer(custName);
+//        if (log.isInfoEnabled()) {
+//            log.info(customers.toString());
+//        }
+//        model.addAttribute("custList",customers);
+//        model.addAttribute("data",custName);
+//        return "custList";
+//    }
 
     @RequestMapping("/preSaveCust")
     public String preSaveCust() {
@@ -92,6 +94,52 @@ public class CustomerController {
             log.info("删除的行数为："+rows);
         }
         return "redirect:/cust/listCust";
+    }
+
+
+    @RequestMapping("/custListPage")
+    public String listCustomerForPage(@RequestParam(value = "pageNum",defaultValue = "1")
+                                                  Integer pageNum, Model model) {
+        // 调用业务逻辑层，获取分页数据
+        PageInfo<Customer> pageInfo = customerService.listCustomerForPage(pageNum);
+        // 获取当前页的客户列表
+        List<Customer> custList = pageInfo.getList();
+        // 客户列表、分页对象传入前端页面
+        model.addAttribute("custList",custList);
+        model.addAttribute("pageInfo",pageInfo);
+        // 表示普通的分页查询，不是根据条件搜索
+        model.addAttribute("pageData","listCustomer");
+        return "custList";
+    }
+
+    /**
+     * 搜索分页
+     * 步骤：
+     * 1 调  客户管理的搜索功能
+     * 2 转
+     *   将搜索的客户列表返回给前端(数据共享)
+     *   跳转到客户列表页面
+     * @param custName
+     * @param model
+     * @return
+     */
+    @RequestMapping("/searchCust")
+    public String searchCustomer(String custName,
+            @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+            Model model) {
+        if(log.isInfoEnabled()) {
+            log.info("searchCustomer name = "+ custName);
+        }
+        PageInfo<Customer> pageInfo = customerService.searchCustomer(pageNum,custName);
+        // 数据传入到前端
+        model.addAttribute("custList",pageInfo.getList());
+        model.addAttribute("pageInfo",pageInfo);
+        // 按条件搜索分页查询
+        model.addAttribute("pageData","searchData");
+        model.addAttribute("data",custName);
+
+        // 跳转到客户列表页面
+        return "custList";
     }
 
 

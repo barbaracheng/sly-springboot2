@@ -11,10 +11,61 @@
     <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
     <!--核心样式-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script src="./js/index.js"></script>
+    <!--js和jQuery-->
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+    <script th:src="@{/js/index.js}"></script>
+
+    <script>
+        $(function () {
+            $("span[id=add]").click(function () {
+                let wid = $(this).attr("name");
+                let workerSalary = $(this).next().text();
+                workerSalary = parseInt(workerSalary);
+                workerSalary += 100;
+                console.log("workerSalary="+workerSalary);
+                $(this).next().text(workerSalary);
+                $.ajax({
+                    url:"/worker/adjustSalary",
+                    data:{"wid":wid,"workerSalary":workerSalary},
+                    method:"POST",
+                    success:function (data,status) {
+                        if (data === "success") {
+                            console.log("加工资成功");
+                        }else {
+                            console.log("加工资失败");
+                        }
+                    }
+                });
+            });
+
+
+            $("span[id=sub]").click(function () {
+                let wid = $(this).attr("name");
+                let workerSalary = $(this).prev().text();
+                workerSalary = parseInt(workerSalary);
+                workerSalary -= 100;
+                console.log("workerSalary="+workerSalary);
+                $(this).prev().text(workerSalary);
+                $.ajax({
+                    url:"/worker/adjustSalary",
+                    data:{"wid":wid,"workerSalary":workerSalary},
+                    method:"POST",
+                    success:function (data,status) {
+                        if (data === "success") {
+                            console.log("减工资成功");
+                        }else {
+                            console.log("减工资失败");
+                        }
+                    }
+                });
+            })
+
+        })
+    </script>
 
 </head>
-<body>
+<body id="body">
 
 <div id="viewport">
 
@@ -41,12 +92,12 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <td>送水工编号</td>
-                            <td>送水工名称</td>
-                            <td>底薪</td>
-                            <td>提成</td>
-                            <td>头像</td>
-                            <td>操作</td>
+                            <th>送水工编号</th>
+                            <th>送水工名称</th>
+                            <th>底薪</th>
+                            <th>提成</th>
+                            <th>头像</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -55,13 +106,17 @@
                             <td th:text="${worker.wid}"></td>
                             <td th:text="${worker.workerName}"></td>
                             <td th:text="${worker.workerSalary}"></td>
-                            <td th:text="${worker.workerMoney}"></td>
                             <td>
-                                <img src="../../images/user.png"
-                                     style="width:40px;height:40px;"
+                                <span id="add" class="glyphicon glyphicon-plus" th:name="${worker.wid}"></span>
+                                <span th:text="${worker.workerSalary}"></span>
+                                <span id="sub" class="glyphicon glyphicon-minus" th:name="${worker.wid}"></span>
+                            </td>
+                            <td>
+                                <img src="../../images/user1.png"
+                                     style="width:40px;height:40px;border-radius: 40px;"
                                      th:if="${#strings.isEmpty(worker.workerImage)}">
                                 <img th:src="@{'http://localhost:8083/'+${worker.workerImage}}"
-                                     style="width:40px;height:40px;"
+                                     style="width:40px;height:40px;border-radius: 40px;"
                                      th:if="${not #strings.isEmpty(worker.workerImage)}"
                                 />
                             </td>

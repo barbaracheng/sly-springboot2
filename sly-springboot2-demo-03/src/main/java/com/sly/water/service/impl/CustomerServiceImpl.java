@@ -1,4 +1,6 @@
 package com.sly.water.service.impl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Customer;
 import com.sly.water.mapper.CustomerMapper;
 import com.sly.water.service.CustomerService;
@@ -81,6 +83,37 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(Integer cid) {
         return customerMapper.getCustomerById(cid);
+    }
+
+    /**
+     * 查询列表分页
+     *
+     * @param pageNum 当前页码
+     * @return 分页对象
+     */
+    @Override
+    public PageInfo<Customer> listCustomerForPage(Integer pageNum) {
+        // 分页的核心：从第pageNum页开始，每页显示3条记录
+        PageHelper.startPage(pageNum,3);
+        List<Customer> list = this.listCustomer();
+        // 分页Bean，封装了分页查询的数据，将查询结果注入到分页对象(Bean)
+        PageInfo<Customer> pageInfo =  new PageInfo<>(list);
+        return pageInfo;
+    }
+
+    /**
+     * 表单搜索分页
+     *
+     * @param pageNum  当前页码
+     * @param custName 客户名称
+     * @return 分页对象
+     */
+    @Override
+    public PageInfo<Customer> searchCustomer(Integer pageNum, String custName) {
+        PageHelper.startPage(pageNum,3);
+        List<Customer> custList = this.searchCustomer(custName);
+        PageInfo<Customer> pageInfo = new PageInfo<>(custList);
+        return pageInfo;
     }
 }
 

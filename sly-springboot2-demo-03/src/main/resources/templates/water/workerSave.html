@@ -11,7 +11,54 @@
     <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
     <!--核心样式-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script src="./js/index.js"></script>
+    <!--js和jQuery-->
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+    <script th:src="@{/js/index.js}"></script>
+
+    <script>
+        $(function () {
+           $("#myFile").change(function (ev) {
+               if (!window.FileReader) {
+                   return;
+               }
+               console.log(ev);
+               let file = ev.target.files[0];
+               if (!file.type.match("image/*")) {
+                   alert("上传的图片必须是png，jpg，gif格式的！");
+                   ev.target.value = "";
+                   return;
+               }
+               let reader = new FileReader(); // 创建FileReader对象
+               reader.readAsDataURL(file); // 读取file对象，读取完毕后会返回result 图片base64格式的结果
+               reader.onload = function (e) {
+                   document.getElementById("thumbnail").src = e.target.result;
+               }
+           });
+        });
+
+        // window.onload = function() {
+        //     document.getElementById("myFile").addEventListener("change",function (ev) {
+        //         if (!window.FileReader) {
+        //             return;
+        //         }
+        //         console.log(ev);
+        //         let file = ev.target.files[0];
+        //         if (!file.type.match("image/*")) {
+        //             alert("上传的图片必须是png，jpg，gif格式的！");
+        //             ev.target.value = "";
+        //             return;
+        //         }
+        //         let reader = new FileReader(); // 创建FileReader对象
+        //         reader.readAsDataURL(file); // 读取file对象，读取完毕后会返回result 图片base64格式的结果
+        //         reader.onload = function (e) {
+        //             document.getElementById("thumbnail").src = e.target.result;
+        //         }
+        //     });
+        //
+        // };
+
+    </script>
 
 </head>
 <body>
@@ -45,13 +92,18 @@
                     <input type="text" class="form-control" id="Address" name="workerMoney">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="aa" class="col-sm-2 control-label">员工图片</label>
+            <div class="form-group" style="display: flex;align-items: center;">
+                <label for="myFile" class="col-sm-2 control-label">员工图片</label>
                 <div class="col-sm-4">
-                    <input type="file" id="aa" name="uploadFile">
+                    <input type="file" id="myFile" name="uploadFile">
+                </div>
+                <div class="col-sm-2">
+
+                    <img  src="../../images/user1.png"
+                          style="width:80px;height:80px;border-radius: 80px;"
+                          id="thumbnail">
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-2">
                     <div style="display: flex;flex-flow: row nowrap;justify-content: space-between;" >

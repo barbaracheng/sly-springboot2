@@ -54,4 +54,16 @@ public class WorkerServiceImpl implements WorkerService {
     public List<Worker> searchWorker(String workerName) {
         return workerMapper.searchWorker(workerName);
     }
+
+    /**
+     * 调整工资
+     *
+     * @param wid          工人id
+     * @param workerSalary 送水工工资
+     * @return 大于0调整工资成功，否则调整工资失败
+     */
+    @Override
+    public int adjustSalary(Integer wid, Integer workerSalary) {
+        return workerMapper.adjustSalary(wid,workerSalary);
+    }
 }

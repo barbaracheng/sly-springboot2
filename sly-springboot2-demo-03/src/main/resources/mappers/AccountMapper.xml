@@ -9,4 +9,16 @@
         from account
         where user_name = #{userName}
     </select>
+
+    <update id="updateAccount" parameterType="Account">
+        update account
+        <if test="userName != null and userName !=''">
+            set user_name = #{userName}
+        </if>
+        <if test="userPwd != null and userPwd != ''">
+            ,user_pwd = #{userPwd}
+        </if>
+        where id = #{id};
+    </update>
+
 </mapper>

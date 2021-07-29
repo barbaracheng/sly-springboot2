@@ -16,4 +16,6 @@ public interface AccountMapper {
      * @return
      */
     Account login(@Param("userName")String userName,@Param("userPwd")String userPwd);
+
+    int updateAccount(Account account);
 }

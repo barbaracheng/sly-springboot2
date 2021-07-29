@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 /**
@@ -21,6 +22,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountMapper accountMapper;
 
+
     /**
      * 判断用户输入的用户名和密码是否有效
      * @param userName 用户名
@@ -28,13 +30,20 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public boolean login(@Param("userName")String userName, @Param("userPwd")String userPwd) {
+    public boolean login(@Param("userName")String userName, @Param("userPwd")String userPwd,HttpSession httpSession) {
         Account account = accountMapper.login(userName, userPwd);
         if (null == account) {
             return false;
         }
+        // 将用户信息保存在session中
+        httpSession.setAttribute("userInfo",account);
         // 使用MD5加密算法将用户密码加密再与从数据库查出来的用户密码进行比较
         userPwd = DigestUtil.md5Hex(userPwd);
         return Objects.equals(userPwd, account.getUserPwd());
+    }
+
+    @Override
+    public int updateAccount(Account account) {
+        return accountMapper.updateAccount(account);
     }
 }

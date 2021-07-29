@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>送水历史列表</title>
+    <title>工资列表</title>
 
     <!--Bootstrap固定框架-->
     <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
@@ -30,10 +30,7 @@
         </nav>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4">
-                    <a class="btn btn-primary" th:href="@{/history/preSaveHistory}">添加送水历史</a>
-                </div>
-                <form class="form-inline col-md-8" th:action="@{/history/searchHistory}">
+                <form class="form-inline col-md-8" th:action="@{/salary/searchSalary}" style="float: right;">
                     <div class="form-group">
                         <label>开始时间：</label>
                         <input type="date" class="form-control" name="startTime" th:value="${startTime}">
@@ -46,26 +43,26 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>历史编号</th>
-                            <th>员工名称</th>
-                            <th>送水时间</th>
-                            <th>客户姓名</th>
+                            <th>员工姓名</th>
+                            <th>员工底薪</th>
+                            <th>每桶水提成</th>
                             <th>送水数量</th>
-                            <th>操作</th>
+                            <th>实际工资</th>
+<!--                            <td>操作</td>-->
                         </tr>
                         </thead>
                         <tbody>
                         <!-- 渲染后客户列表-->
-                        <tr th:each="history : ${historyList}">
-                            <td th:text="${history.hid}"></td>
-                            <td th:text="${history.worker.workerName}"></td>
-                            <td th:text="${#dates.format(history.sendWaterTime,'yyyy-MM-dd')}"></td>
-                            <td th:text="${history.customer.custName}"></td>
-                            <td th:text="${history.sendWaterCount}"></td>
-                            <td>
-                                <a class="glyphicon glyphicon-edit" th:href="@{'/history/preUpdateHistory/'+${history.hid}}"></a>
-                                <a class="glyphicon glyphicon-remove" th:href="@{'/history/delHistory/'+${history.hid}}"></a>
-                            </td>
+                        <tr th:each="salary : ${salaryList}">
+                            <td th:text="${salary.workerName}"></td>
+                            <td th:text="${salary.workerSalary}"></td>
+                            <td th:text="${salary.workerMoney}"></td>
+                            <td th:text="${salary.sendWaterCount}"></td>
+                            <td th:text="${salary.finalSalary}"></td>
+<!--                            <td>-->
+<!--                                <a class="glyphicon glyphicon-edit" th:href="@{'/sala/preUpdateHistory/'+${history.hid}}"></a>-->
+<!--                                <a class="glyphicon glyphicon-remove" th:href="@{'/history/delHistory/'+${history.hid}}"></a>-->
+<!--                            </td>-->
                         </tr>
                         </tbody>
                     </table>

@@ -1,6 +1,7 @@
 package com.sly.water.service;
 
 import com.sly.water.entities.Worker;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,4 +27,12 @@ public interface WorkerService {
     int updateWorker(Worker worker);
 
     List<Worker> searchWorker(String workerName);
+
+    /**
+     * 调整工资
+     * @param wid 工人id
+     * @param workerSalary 送水工工资
+     * @return 大于0调整工资成功，否则调整工资失败
+     */
+    int adjustSalary(Integer wid, Integer workerSalary);
 }

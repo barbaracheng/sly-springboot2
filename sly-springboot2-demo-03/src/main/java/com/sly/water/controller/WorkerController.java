@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -185,5 +183,22 @@ public class WorkerController {
             log.info("update rows = "+rows);
         }
         return "redirect:/worker/workerList";
+    }
+
+    @RequestMapping(value = "/adjustSalary",method = RequestMethod.POST)
+    @ResponseBody
+    public String adjustSalary(@RequestParam("wid")Integer wid, @RequestParam("workerSalary")Integer workerSalary){
+        if (log.isInfoEnabled()) {
+            log.info("adjustSalary wid ="+wid+" workerSalary = "+workerSalary);
+        }
+        int rows = workerService.adjustSalary(wid, workerSalary);
+        if (log.isInfoEnabled()) {
+            log.info("adjustSalary rows = "+rows);
+        }
+        if (rows > 0) {
+            return "success";
+        } else{
+            return "fail";
+        }
     }
 }

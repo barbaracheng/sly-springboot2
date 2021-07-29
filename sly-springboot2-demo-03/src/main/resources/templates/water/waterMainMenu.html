@@ -15,17 +15,17 @@
     a {
       cursor: pointer;
     }
-    .active {
-      color: #20a0ff;
-    }
-  </style>
 
+  </style>
+  <!--js和jQuery-->
+  <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+  <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
   <script th:src="@{/js/index.js}"></script>
+
 </head>
 <body>
 
 <div id="viewport">
-
   <!-- Sidebar -->
   <div id="sidebar" th:fragment="menu">
     <header>
@@ -33,7 +33,7 @@
     </header>
     <ul class="nav">
       <li>
-        <a th:href="@{/cust/listCust}">
+        <a th:href="@{/cust/custListPage}">
           <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
            客户管理
         </a>
@@ -51,19 +51,19 @@
         </a>
       </li>
       <li>
-        <a>
+        <a th:href="@{/salary/salaryList}">
           <i class="glyphicon glyphicon-yen"></i>
            计算工资
         </a>
       </li>
       <li>
-        <a>
+        <a th:href="@{/detail/detailList}">
           <i class="glyphicon glyphicon-stats"></i>
            统计送水数量
         </a>
       </li>
       <li>
-        <a>
+        <a th:href="@{/account/preUpdatePwd}">
           <i class="glyphicon glyphicon-lock"></i> 修改密码
         </a>
       </li>
@@ -76,10 +76,30 @@
       <div class="container-fluid" >
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#" class="glyphicon glyphicon-home" style="color: #d9534f;">
-            </a>
+            <a>欢迎您，[[${session.userName}]]!</a>
           </li>
-          <li><a href="#">测试用户[[${session.userName}]]</a></li>
+<!--          <li>-->
+<!--            <a href="#">-->
+<!--              <span class="glyphicon glyphicon-home" style="color: #4294bc;"></span>-->
+<!--            </a>-->
+<!--          </li>-->
+          <li>
+            <div class="dropdown">
+              <button class="dropdown-toggle" type="button" id="dropdownMenu1"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+              style="width: 50px;height: 50px;border-radius: 50px;border:2px solid #ddd;">
+                <img th:src="@{/images/icon-user.svg}" style="width: 45px;height: 36px;">
+                <span class="caret"></span>
+              </button>
+                <a href="#">[[${session.userName}]]</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">个人中心</a></li>
+<!--                <li role="separator" class="divider"></li>-->
+                <li><a th:href="@{/}">退出登录</a></li>
+              </ul>
+            </div>
+          </li>
+
         </ul>
       </div>
     </nav>
