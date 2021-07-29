@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息列表</title>
+
+    <!--Bootstrap固定框架-->
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.css}">
+    <!--图标库-->
+    <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
+    <!--核心样式-->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!--js和jQuery-->
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+    <script th:src="@{/js/index.js}"></script>
+
+    <script>
+        $(function () {
+            $("span[id=add]").click(function () {
+                let wid = $(this).attr("name");
+                let workerSalary = $(this).next().text();
+                workerSalary = parseInt(workerSalary);
+                workerSalary += 100;
+                console.log("workerSalary="+workerSalary);
+                $(this).next().text(workerSalary);
+                $.ajax({
+                    url:"/worker/adjustSalary",
+                    data:{"wid":wid,"workerSalary":workerSalary},
+                    method:"POST",
+                    success:function (data,status) {
+                        if (data === "success") {
+                            console.log("加工资成功");
+                        }else {
+                            console.log("加工资失败");
+                        }
+                    }
+                });
+            });
+
+
+            $("span[id=sub]").click(function () {
+                let wid = $(this).attr("name");
+                let workerSalary = $(this).prev().text();
+                workerSalary = parseInt(workerSalary);
+                workerSalary -= 100;
+                console.log("workerSalary="+workerSalary);
+                $(this).prev().text(workerSalary);
+                $.ajax({
+                    url:"/worker/adjustSalary",
+                    data:{"wid":wid,"workerSalary":workerSalary},
+                    method:"POST",
+                    success:function (data,status) {
+                        if (data === "success") {
+                            console.log("减工资成功");
+                        }else {
+                            console.log("减工资失败");
+                        }
+                    }
+                });
+            })
+
+        })
+    </script>
+
+</head>
+<body id="body">
+
+<div id="viewport">
+
+    <!-- Sidebar -->
+    <div id="sidebar" th:replace="waterMainMenu::menu"></div>
+
+    <!-- Content -->
+    <div id="content">
+        <nav class="navbar navbar-default" th:replace="waterMainMenu::nav">
+
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <a class="btn btn-primary" th:href="@{/worker/preSaveWorker}">添加员工</a>
+                    <a class="btn btn-default" th:href="@{/worker/workerSendNoWater}">查询未送水员工</a>
+                </div>
+                <form class="form-inline col-md-8" th:action="@{/worker/searchWorker}" method="get">
+                    <div class="form-group">
+                        <input type="text" required class="form-control"  name="workerName" placeholder="请输入员工姓名..." >
+                    </div>
+                    <button type="submit" class="btn btn-danger">搜索</button>
+                </form>
+                <div class="col-md-12">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>送水工编号</th>
+                            <th>送水工名称</th>
+                            <th>底薪</th>
+                            <th>提成</th>
+                            <th>头像</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 渲染后客户列表-->
+                        <tr th:each="worker : ${workerList}">
+                            <td th:text="${worker.wid}"></td>
+                            <td th:text="${worker.workerName}"></td>
+                            <td th:text="${worker.workerSalary}"></td>
+                            <td>
+                                <span id="add" class="glyphicon glyphicon-plus" th:name="${worker.wid}"></span>
+                                <span th:text="${worker.workerSalary}"></span>
+                                <span id="sub" class="glyphicon glyphicon-minus" th:name="${worker.wid}"></span>
+                            </td>
+                            <td>
+                                <img src="../../images/user1.png"
+                                     style="width:40px;height:40px;border-radius: 40px;"
+                                     th:if="${#strings.isEmpty(worker.workerImage)}">
+                                <img th:src="@{'http://localhost:8083/'+${worker.workerImage}}"
+                                     style="width:40px;height:40px;border-radius: 40px;"
+                                     th:if="${not #strings.isEmpty(worker.workerImage)}"
+                                />
+                            </td>
+                            <td>
+                                <a class="glyphicon glyphicon-edit" th:href="@{'/worker/preUpdateWorker/'+${worker.wid}}"></a>
+                                <a class="glyphicon glyphicon-remove" th:href="@{'/worker/delWorker/'+${worker.wid}}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <div th:switch="${pageData}" class="modal-footer no-margin-top" >
+                        <div class="col-md-6">
+                            当前第 [[${pageInfo.pageNum}]]页，&nbsp;共 [[${pageInfo.pages}]] 页。&nbsp;一共 [[${pageInfo.total}]] 条记录
+                        </div>
+
+                        <ul th:case="'listWorker'" class="pagination pull-right no-margin">
+                            <li th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="'/worker/workerListPage?pageNum=1'">首页</a>
+                            </li>
+
+                            <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="'/worker/workerListPage?pageNum='+${pageInfo.prePage}">
+                                    <i class="glyphicon glyphicon-chevron-left"></i>
+                                </a>
+                            </li>
+                            <!--遍历条数-->
+                            <li th:each="nav:${pageInfo.navigatepageNums}">
+                                <a th:href="'/worker/workerListPage?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                            </li>
+
+                            <li class="next" th:if="${pageInfo.hasNextPage}">
+                                <a th:href="'/worker/workerListPage?pageNum='+${pageInfo.nextPage}">
+                                    <i class="glyphicon glyphicon-chevron-right"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a th:href="'/worker/workerListPage?pageNum='+${pageInfo.pages}">尾页</a>
+                            </li>
+                        </ul>
+
+                        <ul th:case="'searchData'" class="pagination pull-right no-margin">
+                            <li th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="'/worker/searchWorker?workerName='+${data}+'&pageNum=1'">首页</a>
+                            </li>
+
+                            <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="'/worker/searchWorker?workerName='+${data}+'&pageNum='+${pageInfo.prePage}">
+                                    <i class="ace-icon fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <!--遍历条数-->
+                            <li th:each="nav:${pageInfo.navigatepageNums}">
+                                <a th:href="'/worker/searchWorker?workerName='+${data}+'&pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                            </li>
+
+                            <li class="next" th:if="${pageInfo.hasNextPage}">
+                                <a th:href="'/worker/searchWorker?workerName='+${data}+'&pageNum='+${pageInfo.nextPage}">
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="'/worker/searchWorker?workerName='+${data}+'&pageNum='+${pageInfo.pages}">尾页</a>
+                            </li>
+                        </ul>
+
+                        <ul th:case="'SendNoWater'" class="pagination pull-right no-margin">
+                            <li th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="'/worker/workerSendNoWater?pageNum=1'">首页</a>
+                            </li>
+
+                            <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="'/worker/workerSendNoWater?pageNum='+${pageInfo.prePage}">
+                                    <i class="glyphicon glyphicon-chevron-left"></i>
+                                </a>
+                            </li>
+                            <!--遍历条数-->
+                            <li th:each="nav:${pageInfo.navigatepageNums}">
+                                <a th:href="'/worker/workerSendNoWater?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                            </li>
+
+                            <li class="next" th:if="${pageInfo.hasNextPage}">
+                                <a th:href="'/worker/workerSendNoWater?pageNum='+${pageInfo.nextPage}">
+                                    <i class="glyphicon glyphicon-chevron-right"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a th:href="'/worker/workerSendNoWater?pageNum='+${pageInfo.pages}">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

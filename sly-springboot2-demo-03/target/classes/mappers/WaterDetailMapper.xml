@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sly.water.mapper.WaterDetailMapper">
+    <sql id="selectWater">
+        select w.worker_name,
+        ifnull(group_concat(distinct c.cust_name),'/') custList,
+        ifnull(sum(h.send_water_count),0) sendCount
+        from worker w left join history h on w.wid = h.worker_id left join customer c on c.cid = h.cust_id
+    </sql>
+
+    <select id="listWaterDetail" resultType="WaterDetail">
+        <include refid="selectWater"></include>
+        group by w.worker_name
+        order by sendcount desc;
+    </select>
+
+    <select id="searchDetail" parameterType="int" resultType="WaterDetail">
+        <include refid="selectWater"></include>
+        where sendCount between #{min} and #{max}
+        group by w.worker_name
+        order by sendcount desc;
+    </select>
+
+</mapper>

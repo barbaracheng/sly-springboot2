@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>送水历史列表</title>
+
+    <!--Bootstrap固定框架-->
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+    <link rel='stylesheet' th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.css}">
+    <!--图标库-->
+    <link rel='stylesheet' th:href='@{/css/material-design-iconic-font.min.css}'>
+    <!--核心样式-->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!--js和jQuery-->
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+    <script th:src="@{/js/index.js}"></script>
+
+</head>
+<body>
+
+<div id="viewport">
+
+    <!-- Sidebar -->
+    <div id="sidebar" th:replace="waterMainMenu::menu"></div>
+
+    <!-- Content -->
+    <div id="content">
+        <nav class="navbar navbar-default" th:replace="waterMainMenu::nav">
+
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+<!--                <div class="col-md-4">-->
+<!--                    <a class="btn btn-primary" th:href="@{/history/preSaveHistory}">添加送水历史</a>-->
+<!--                </div>-->
+<!--                <form class="form-inline col-md-8" th:action="@{/history/searchHistory}" style="float: right;">-->
+<!--                    <div class="form-group">-->
+<!--                        <label>送水数量：</label>-->
+<!--                        <input type="date" class="form-control" name="startTime" th:value="${startTime}">-->
+<!--                        <label>到</label>-->
+<!--                        <input type="date" class="form-control" name="endTime" th:value="${endTime}">-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="btn btn-danger">搜索</button>-->
+<!--                </form>-->
+                <div class="col-md-12">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>员工名称</th>
+                            <th>客户列表</th>
+                            <th>送水数量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 渲染后客户列表-->
+                        <tr th:each="detail : ${detailList}">
+                            <td th:text="${detail.workerName}"></td>
+                            <td th:text="${detail.custList}"></td>
+                            <td th:text="${detail.sendCount}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
