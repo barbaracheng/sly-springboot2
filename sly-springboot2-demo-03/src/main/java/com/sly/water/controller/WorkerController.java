@@ -2,6 +2,7 @@ package com.sly.water.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
+import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
 import com.sly.water.service.WorkerService;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class WorkerController {
      * @return
      */
     @RequestMapping("/workerListPage")
-    public String listCustomerForPage(@RequestParam(value = "pageNum",defaultValue = "1")
+    public String listWorkerForPage(@RequestParam(value = "pageNum",defaultValue = "1")
                                                   Integer pageNum, Model model) {
         PageInfo<Worker> pageInfo = workerService.listWorkerForPage(pageNum);
         List<Worker> workerList = pageInfo.getList();
@@ -162,7 +163,7 @@ public class WorkerController {
             worker.setWorkerImage(newUploadFile);
         }
         workerService.saveWorker(worker);
-        return "redirect:/worker/workerList";
+        return "redirect:/worker/workerListPage";
     }
 
     /**
@@ -170,16 +171,31 @@ public class WorkerController {
      * @param wid
      * @return
      */
-    @RequestMapping("/delWorker/{wid}")
-    public String deleteWorker(@PathVariable("wid") Integer wid) {
+    @RequestMapping(value = "/delWorker",method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteWorker(@RequestParam("wid")Integer wid) {
+        // 先查询送水历史中有没有该员工
+        List<History> historyList = workerService.searchWorkerInHistoryById(wid);
         if(log.isInfoEnabled()) {
-            log.info("delete worker wid = "+wid);
+            log.info("delete wid = " + wid);
+            log.info("historyList = " + historyList);
         }
-        Integer rows = workerService.deleteWorkerById(wid);
+        // 历史表中查询到了该员工的信息，返回删除失败
+        if (historyList.size() > 0) {
+            return "fail";
+        }
+        // 如果没有，则执行删除操作
+        int rows = workerService.deleteWorkerById(wid);
         if(log.isInfoEnabled()) {
+            log.info("delete wid = "+wid);
+            log.info("historyList = "+historyList);
             log.info("delete worker rows = "+rows);
         }
-        return "redirect:/worker/workerList";
+        if (rows > 0){
+            return "delete ok";
+        }else {
+            return "fail";
+        }
     }
 
 
@@ -240,7 +256,7 @@ public class WorkerController {
         if(log.isInfoEnabled()) {
             log.info("update rows = "+rows);
         }
-        return "redirect:/worker/workerList";
+        return "redirect:/worker/workerListPage";
     }
 
     /**

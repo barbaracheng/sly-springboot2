@@ -54,4 +54,10 @@
         from worker w left join history h on w.wid = h.worker_id
         where h.worker_id is null
     </select>
+
+    <select id="searchWorkerInHistoryById" parameterType="int" resultType="History">
+        select hid,cust_id,worker_id,send_water_time,send_water_count
+        from history
+        where worker_id = #{wid}
+    </select>
 </mapper>

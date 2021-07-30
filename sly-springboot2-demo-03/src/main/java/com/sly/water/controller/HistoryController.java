@@ -1,6 +1,7 @@
 package com.sly.water.controller;
 
 import cn.hutool.core.date.DateTime;
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Customer;
 import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
@@ -57,6 +58,26 @@ public class HistoryController {
     }
 
     /**
+     * 分页列出送水历史
+     * @param pageNum
+     * @param model
+     * @return
+     */
+    @RequestMapping("/historyListPage")
+    public String listHistoryForPage(@RequestParam(value = "pageNum",defaultValue = "1")
+                                            Integer pageNum, Model model) {
+        PageInfo<History> pageInfo = historyService.listHistoryForPage(pageNum);
+        List<History> historyList = pageInfo.getList();
+        //
+        model.addAttribute("historyList",historyList);
+        model.addAttribute("pageInfo",pageInfo);
+        // 加一个属性pageData，表示是普通的分页查询，不是根据条件搜索
+        model.addAttribute("pageData","listHistory");
+        return "historyList";
+    }
+
+
+    /**
      * 根据开始时间和结束时间搜索送水记录
      * @param startTime
      * @param endTime
@@ -64,15 +85,21 @@ public class HistoryController {
      * @return
      */
     @RequestMapping("/searchHistory")
-    public String searchHistory(String startTime ,String endTime,Model model) {
+    public String searchHistory(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                                String startTime ,String endTime,Model model) {
         if (log.isInfoEnabled()) {
             log.info("startTime:"+startTime);
             log.info("endTime:"+endTime);
         }
-        List<History> historyList = historyService.searchHistory(startTime, endTime);
-        model.addAttribute("historyList",historyList);
+        PageInfo<History> pageInfo = historyService.searchHistory(pageNum, startTime, endTime);
+        // 数据传入到前端
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("historyList",pageInfo.getList());
         model.addAttribute("startTime",startTime);
         model.addAttribute("endTime",endTime);
+        // 按条件搜索分页
+        model.addAttribute("pageData","searchData");
+
         return "historyList";
     }
 
@@ -116,7 +143,7 @@ public class HistoryController {
         if (log.isInfoEnabled()) {
             log.info("update history rows = "+rows);
         }
-        return "redirect:/history/historyList";
+        return "redirect:/history/historyListPage";
     }
 
     /**
@@ -135,6 +162,13 @@ public class HistoryController {
     }
 
 
+    /**
+     * 添加送水记录
+     * @param history 送水记录
+     * @param custId 客户id
+     * @param workerId 员工id
+     * @return
+     */
     @RequestMapping(value = "/saveHistory",method = RequestMethod.POST)
     public String saveHistory(History history, Integer custId, Integer workerId) {
         if (log.isInfoEnabled()) {
@@ -146,7 +180,7 @@ public class HistoryController {
         if (log.isInfoEnabled()) {
             log.info("rows = "+rows);
         }
-        return "redirect:/history/historyList";
+        return "redirect:/history/historyListPage";
     }
 
 
@@ -164,7 +198,7 @@ public class HistoryController {
         if(log.isInfoEnabled()) {
             log.info("delete History rows = "+rows);
         }
-        return "redirect:/history/historyList";
+        return "redirect:/history/historyListPage";
     }
 
     /**

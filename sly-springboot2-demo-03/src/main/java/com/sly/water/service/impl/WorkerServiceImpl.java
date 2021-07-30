@@ -2,6 +2,7 @@ package com.sly.water.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
 import com.sly.water.mapper.WorkerMapper;
 import com.sly.water.service.WorkerService;
@@ -47,6 +48,16 @@ public class WorkerServiceImpl implements WorkerService {
         return workerMapper.deleteWorkerById(wid);
     }
 
+    /**
+     * 在删除员工之前先检查在历史表中是否有送水记录
+     * @param wid
+     * @return
+     */
+    @Override
+    public List<History> searchWorkerInHistoryById(Integer wid) {
+        return workerMapper.searchWorkerInHistoryById(wid);
+    }
+
     @Override
     public int updateWorker(Worker worker) {
         return workerMapper.updateWorker(worker);
@@ -59,7 +70,6 @@ public class WorkerServiceImpl implements WorkerService {
 
     /**
      * 调整工资
-     *
      * @param wid          工人id
      * @param workerSalary 送水工工资
      * @return 大于0调整工资成功，否则调整工资失败
@@ -80,8 +90,9 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
 /**
- * ===============================
+ * ================================
  * 下面是分页的功能
+ * ================================
  */
     /**
      * 查询列表分页

@@ -4,10 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sly.water.mapper.AccountMapper">
-    <select id="login" parameterType="string" resultType="Account">
+    <sql id="selectUserByName">
         select id,user_name,user_pwd
         from account
         where user_name = #{userName}
+    </sql>
+    <select id="login" parameterType="string" resultType="Account">
+        <include refid="selectUserByName"></include>
     </select>
 
     <update id="updateAccount" parameterType="Account">
@@ -20,5 +23,9 @@
         </if>
         where id = #{id};
     </update>
+
+    <select id="getAccount" parameterType="string" resultType="Account">
+        <include refid="selectUserByName"></include>
+    </select>
 
 </mapper>

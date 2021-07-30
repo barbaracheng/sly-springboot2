@@ -2,6 +2,8 @@ package com.sly.water.service.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.Customer;
 import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
@@ -97,5 +99,35 @@ public class HistoryServiceImpl implements HistoryService {
         int rows = historyMapper.deleteBatchHistory(idList);
 //        System.out.println(1/0);
         return rows;
+    }
+
+    /**
+     * 查询历史列表分页
+     *
+     * @param pageNum 当前页码
+     * @return 分页对象
+     */
+    @Override
+    public PageInfo<History> listHistoryForPage(Integer pageNum) {
+        PageHelper.startPage(pageNum,PAGE_SiZE);
+        List<History> list = this.listHistory();
+        PageInfo<History> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+
+    /**
+     * 搜索历史列表的分页
+     *
+     * @param pageNum 当前页码
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return
+     */
+    @Override
+    public PageInfo<History> searchHistory(Integer pageNum, String startTime, String endTime) {
+        PageHelper.startPage(pageNum,PAGE_SiZE);
+        List<History> historyList = this.searchHistory(startTime, endTime);
+        PageInfo<History> pageInfo = new PageInfo<>(historyList);
+        return pageInfo;
     }
 }

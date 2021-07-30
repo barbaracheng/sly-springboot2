@@ -1,6 +1,7 @@
 package com.sly.water.service;
 
 import com.github.pagehelper.PageInfo;
+import com.sly.water.entities.History;
 import com.sly.water.entities.Worker;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,6 +25,12 @@ public interface WorkerService {
     int saveWorker(Worker worker);
 
     int deleteWorkerById(Integer wid);
+    /**
+     * 在删除员工之前先检查在历史表中是否有送水记录
+     * @param wid
+     * @return
+     */
+    List<History> searchWorkerInHistoryById(Integer wid);
 
     int updateWorker(Worker worker);
 

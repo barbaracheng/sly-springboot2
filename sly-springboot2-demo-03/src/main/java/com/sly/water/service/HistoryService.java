@@ -1,6 +1,7 @@
 package com.sly.water.service;
 
 import cn.hutool.core.date.DateTime;
+import com.github.pagehelper.PageInfo;
 import com.sly.water.entities.History;
 
 import java.util.List;
@@ -35,5 +36,24 @@ public interface HistoryService {
      */
     int deleteBatchHistory(String ids);
 
+    /**
+     * 每页数量
+     */
+    public final static int PAGE_SiZE = 5;
 
+    /**
+     * 查询历史列表分页
+     * @param pageNum 当前页码
+     * @return 分页对象
+     */
+    public PageInfo<History> listHistoryForPage(Integer pageNum);
+
+    /**
+     * 搜索历史列表的分页
+     * @param pageNum
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    PageInfo<History> searchHistory(Integer pageNum,String startTime, String endTime);
 }

@@ -12,7 +12,11 @@ import javax.servlet.http.HttpSession;
  * @date 2021/7/22 15:13
  */
 public interface AccountService {
-    boolean login(@Param("userName")String userName, @Param("userPwd")String userPwd, HttpSession httpSession);
+    boolean login(String userName,String userPwd, HttpSession httpSession);
+
+    Account getAccount(String userName);
 
     int updateAccount(Account account);
+
+
 }

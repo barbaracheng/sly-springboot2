@@ -44,7 +44,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account getAccount(String userName) {
+        return accountMapper.getAccount(userName);
+    }
+
+    @Override
     public int updateAccount(Account account) {
         return accountMapper.updateAccount(account);
     }
+
+
 }
